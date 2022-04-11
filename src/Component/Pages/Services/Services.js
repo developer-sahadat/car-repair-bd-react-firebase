@@ -1,7 +1,7 @@
 import React from "react";
 
-const Faq = () => {
+const Service = () => {
   return <div></div>;
 };
 
-export default Faq;
+export default Service;
