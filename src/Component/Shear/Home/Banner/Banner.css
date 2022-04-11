@@ -14,3 +14,11 @@
   padding-top: 20px;
   color: #98a1b9;
 }
+.bookBtn {
+  border: none;
+  background-color: #42acf5;
+  padding: 15px 60px;
+  color: white;
+  font-size: 18px;
+  border-radius: 50px;
+}
