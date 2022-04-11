@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
+.banner {
+  font-family: "Roboto", sans-serif;
+}
+.banner h1 {
+  font-family: "Roboto Slab", serif;
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #303c4f;
+}
+.banner p {
+  line-height: 2;
+  padding-top: 20px;
+  color: #98a1b9;
+}
