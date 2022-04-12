@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useRef } from "react";
 import loginImg from "../../../Assets/Images/login.jpg";
 import "./login.css";
 import googleIcons from "../../../Assets/Icons/icons8-google-48.png";
 import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const navigate = useNavigate();
+
+  const submitHandle = (e) => {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    console.log(email, password);
+  };
+
+  const createNewAccount = () => {
+    navigate("/signup");
+  };
+
   return (
     <div className="login-container">
       <div className="container bg-white">
@@ -27,7 +43,7 @@ const Login = () => {
                 <div></div>
               </div>
 
-              <Form>
+              <Form onSubmit={submitHandle}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label className="fw-bold">
                     Email
@@ -37,6 +53,7 @@ const Login = () => {
                     type="email"
                     placeholder="Enter email"
                     required
+                    ref={emailRef}
                     className="emailInput"
                   />
                   <Form.Text className="text-muted">
@@ -52,6 +69,7 @@ const Login = () => {
                     type="password"
                     placeholder="Password"
                     required
+                    ref={passwordRef}
                     className="passwordInput"
                   />
                 </Form.Group>
@@ -62,7 +80,7 @@ const Login = () => {
               </Form>
               <div className="createNewAccount">
                 <span> Not registered yet?</span>
-                <button>Create an Account</button>
+                <button onClick={createNewAccount}>Create an Account</button>
               </div>
             </div>
           </div>
