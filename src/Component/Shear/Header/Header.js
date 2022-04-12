@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
-import logo from "../../../Assets/Images/logo.jpg";
+import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
@@ -29,7 +28,9 @@ const Header = () => {
                   Services
                 </NavLink>
               </Nav>
-              <button className="nav-btn">Login</button>
+              <Link to="/login">
+                <button className="nav-btn">Login</button>
+              </Link>
             </Navbar.Collapse>
           </Container>
         </Navbar>
