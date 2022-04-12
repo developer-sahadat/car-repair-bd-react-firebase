@@ -47,6 +47,7 @@ const Signup = () => {
                       placeholder="Enter Name"
                       required
                       className="emailInput"
+                      name="name"
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -59,6 +60,7 @@ const Signup = () => {
                       placeholder="Enter email"
                       required
                       className="emailInput"
+                      name="email"
                     />
                     <Form.Text className="text-muted">
                       We'll never share your email with anyone else.
@@ -74,6 +76,7 @@ const Signup = () => {
                       placeholder="Password"
                       required
                       className="passwordInput"
+                      name="password"
                     />
                   </Form.Group>
                   <Button className="submitBtn" variant="primary" type="submit">
