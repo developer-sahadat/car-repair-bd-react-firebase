@@ -1,4 +1,90 @@
-.login {
+.login-container {
   background: #9a9acc;
   padding: 20px;
+}
+.login {
+  padding: 20px 50px;
+  border-left: 1px solid #ebebff;
+}
+.login h2 {
+  padding: 30px 0 0;
+  font-family: "Roboto Slab", serif;
+  font-weight: 600;
+}
+.login p {
+  color: #6a6ab2;
+  font-size: 18px;
+  padding-top: 5px;
+}
+
+.googleBtn {
+  width: 80%;
+  margin: 25px 0;
+  border: 2px solid rgb(237, 241, 255);
+  background-color: white;
+  height: 60px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Roboto Slab", serif;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.googleBtn img {
+  width: 40px;
+  padding-right: 10px;
+}
+.orSignByEmail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 30px;
+}
+.orSignByEmail div {
+  width: 20%;
+  margin: 10px;
+  height: 2px;
+  background: #6a6ab2;
+}
+.orSignByEmail span {
+  color: #9a9acc;
+}
+
+.start {
+  color: #7373e2;
+}
+.emailInput,
+.passwordInput {
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+.forgetPassword {
+  text-align: end;
+  margin: 0;
+  line-height: 0;
+  padding-bottom: 30px;
+  color: #42acf5;
+  cursor: pointer;
+}
+.submitBtn {
+  width: 100%;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 10px 0;
+}
+.createNewAccount {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.createNewAccount span {
+  color: black;
+  padding-right: 10px;
+  font-weight: 500;
+}
+.createNewAccount button {
+  border: none;
+  background-color: white;
+  color: #7373e2;
+  font-weight: 600;
+  font-size: 17px;
 }
