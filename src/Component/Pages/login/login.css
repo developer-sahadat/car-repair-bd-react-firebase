@@ -17,9 +17,9 @@
   padding-top: 5px;
 }
 
-.googleBtn {
+.SocialLogin {
   width: 80%;
-  margin: 25px 0;
+  margin: 10px 0;
   border: 2px solid rgb(237, 241, 255);
   background-color: white;
   height: 60px;
@@ -29,7 +29,7 @@
   border-radius: 50px;
   cursor: pointer;
 }
-.googleBtn img {
+.SocialLogin img {
   width: 40px;
   padding-right: 10px;
 }

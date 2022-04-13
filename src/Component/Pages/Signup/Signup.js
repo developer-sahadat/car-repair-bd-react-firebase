@@ -1,13 +1,37 @@
 import React from "react";
 import loginImg from "../../../Assets/Images/login.jpg";
 import googleIcons from "../../../Assets/Icons/icons8-google-48.png";
+import facebookIcons from "../../../Assets/Icons/icons8-facebook-48.png";
+import twitterIcons from "../../../Assets/Icons/icons8-twitter-48.png";
+import githubIcons from "../../../Assets/Icons/icons8-github-48.png";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
+} from "react-firebase-hooks/auth";
+import auth from "../../../Firebase/init";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const submitHandle = (e) => {
+  const navigates = useNavigate();
+
+  const [createUserWithEmailAndPassword, user] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [updateProfile] = useUpdateProfile(auth);
+
+  if (user) {
+    navigates("/profile");
+  }
+
+  const submitHandle = async (e) => {
     e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    createUserWithEmailAndPassword(email, password);
+    updateProfile({ name });
   };
 
   const navigateLogin = () => {
@@ -25,9 +49,18 @@ const Signup = () => {
               <div className=" login">
                 <h2>Sign Up</h2>
                 <p>See your growth and gets consultation support!</p>
-                <div className="social-media-login">
-                  <button className="googleBtn">
-                    <img src={googleIcons} alt="" /> Sign Up With Google
+                <div className="text-center mb-3">
+                  <button className="SocialLogin">
+                    <img src={googleIcons} alt="" /> Sign in With Google
+                  </button>
+                  <button className="SocialLogin">
+                    <img src={facebookIcons} alt="" /> Sign in With Facebook
+                  </button>
+                  <button className="SocialLogin">
+                    <img src={twitterIcons} alt="" /> Sign in With Twitter
+                  </button>
+                  <button className="SocialLogin">
+                    <img src={githubIcons} alt="" /> Sign in With GitHub
                   </button>
                 </div>
                 <div className="orSignByEmail">

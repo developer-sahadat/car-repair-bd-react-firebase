@@ -13,6 +13,12 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_storageBucket,
   messagingSenderId: process.env.REACT_APP_messagingSenderId,
   appId: process.env.REACT_APP_appId,
+  // apiKey: "AIzaSyAkRy1FrAlzeArBGgoII4xQ4aulHUtn5aI",
+  // authDomain: "car-repair-e1852.firebaseapp.com",
+  // projectId: "car-repair-e1852",
+  // storageBucket: "car-repair-e1852.appspot.com",
+  // messagingSenderId: "810357174111",
+  // appId: "1:810357174111:web:6bde8c1e8acf6a451250ea",
 };
 
 // Initialize Firebase
