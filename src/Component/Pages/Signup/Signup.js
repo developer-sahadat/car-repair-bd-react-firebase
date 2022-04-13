@@ -8,32 +8,49 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateUserWithEmailAndPassword,
-  useUpdateProfile,
+  useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import auth from "../../../Firebase/init";
+import Spinners from "../../Spinner/Spinners";
 
 const Signup = () => {
+  /*---------all use state----------*/
   const navigate = useNavigate();
-  const navigates = useNavigate();
 
-  const [createUserWithEmailAndPassword, user] =
+  /*---------Create a user----------*/
+  const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
-  const [updateProfile] = useUpdateProfile(auth);
+  /*---------Google sign in ----------*/
+  const [signInWithGoogle, googleLoading, googleError] =
+    useSignInWithGoogle(auth);
 
-  if (user) {
-    navigates("/profile");
-  }
-
-  const submitHandle = async (e) => {
+  /*---------Submit handler Start here ----------*/
+  const submitHandle = (e) => {
     e.preventDefault();
 
-    const name = e.target.name.value;
+    // const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUserWithEmailAndPassword(email, password);
-    updateProfile({ name });
   };
 
+  /*---------Loading and error handle Start here ----------*/
+  let emailMessage;
+  let googleErrorMessage;
+  if (googleError || error) {
+    emailMessage = error?.message;
+    googleErrorMessage = googleError?.message;
+  }
+  if (loading || googleLoading) {
+    <Spinners />;
+  }
+
+  /*---------Private routes handle ----------*/
+  if (user) {
+    navigate("/profile");
+  }
+
+  /*--------- already have an account handle ----------*/
   const navigateLogin = () => {
     navigate("/login");
   };
@@ -47,10 +64,16 @@ const Signup = () => {
             </div>
             <div>
               <div className=" login">
+                <h6 className="text-danger text-center">
+                  {googleErrorMessage}
+                </h6>
                 <h2>Sign Up</h2>
                 <p>See your growth and gets consultation support!</p>
                 <div className="text-center mb-3">
-                  <button className="SocialLogin">
+                  <button
+                    onClick={() => signInWithGoogle()}
+                    className="SocialLogin"
+                  >
                     <img src={googleIcons} alt="" /> Sign in With Google
                   </button>
                   <button className="SocialLogin">
@@ -68,6 +91,7 @@ const Signup = () => {
                   <span>Or sign Up by email</span>
                   <div></div>
                 </div>
+                <h6 className="text-danger text-center">{emailMessage}</h6>
 
                 <Form onSubmit={submitHandle}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">

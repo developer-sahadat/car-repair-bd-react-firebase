@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import loginImg from "../../../Assets/Images/login.jpg";
 import "./login.css";
 import googleIcons from "../../../Assets/Icons/icons8-google-48.png";
@@ -9,25 +9,51 @@ import { Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../Firebase/init";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import Spinners from "../../Spinner/Spinners";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 
 const Login = () => {
+  /*---------all use state----------*/
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const navigate = useNavigate();
   let location = useLocation();
 
+  /*---------Email and password sign in ----------*/
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
-  let from = location?.state?.from?.pathname || "/profile";
-  if (user) {
-    navigate(from, { replace: true });
+
+  /*---------Google sign in ----------*/
+  const [signInWithGoogle, googleUser, googleLoading, googleError] =
+    useSignInWithGoogle(auth);
+
+  /*---------Loading and error handle Start here ----------*/
+  let emailMessage;
+  let googleErrorMessage;
+  if (googleError || error) {
+    emailMessage = error?.message;
+    googleErrorMessage = googleError?.message;
   }
-  const submitHandle = (e) => {
+
+  if (loading || googleLoading) {
+    <Spinners />;
+  }
+
+  /*---------Submit handler Start here ----------*/
+  const submitHandler = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     signInWithEmailAndPassword(email, password);
   };
+
+  /*---------Private routes handle ----------*/
+  let from = location?.state?.from?.pathname || "/profile";
+  if (user || googleUser) {
+    navigate(from, { replace: true });
+  }
+
+  /*---------New Account Create  handler Start here ----------*/
 
   const createNewAccount = () => {
     navigate("/signup");
@@ -42,10 +68,14 @@ const Login = () => {
           </div>
           <div>
             <div className=" login">
+              <h6 className="text-danger text-center">{googleErrorMessage}</h6>
               <h2>Login</h2>
               <p>See your growth and gets consultation support!</p>
               <div className="text-center mb-3">
-                <button className="SocialLogin">
+                <button
+                  onClick={() => signInWithGoogle()}
+                  className="SocialLogin"
+                >
                   <img src={googleIcons} alt="" /> Sign in With Google
                 </button>
                 <button className="SocialLogin">
@@ -63,8 +93,9 @@ const Login = () => {
                 <span>Or sign in by email</span>
                 <div></div>
               </div>
+              <h6 className="text-danger text-center">{emailMessage}</h6>
 
-              <Form onSubmit={submitHandle}>
+              <Form onSubmit={submitHandler}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label className="fw-bold">
                     Email
