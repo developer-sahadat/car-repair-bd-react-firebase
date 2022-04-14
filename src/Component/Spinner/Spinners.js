@@ -3,18 +3,8 @@ import { Button, Spinner } from "react-bootstrap";
 
 const Spinners = () => {
   return (
-    <div>
-      <>
-        <Button variant="primary" disabled>
-          <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            aria-hidden="true"
-          />
-          <span className="visually-hidden">Loading...</span>
-        </Button>{" "}
+    <div className="d-flex justify-content-center align-items-center">
+      <div>
         <Button variant="primary" disabled>
           <Spinner
             as="span"
@@ -25,7 +15,7 @@ const Spinners = () => {
           />
           Loading...
         </Button>
-      </>
+      </div>
     </div>
   );
 };

@@ -8,9 +8,15 @@ import githubIcons from "../../../Assets/Icons/icons8-github-48.png";
 import { Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../Firebase/init";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useSendPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+  useSignInWithGithub,
+} from "react-firebase-hooks/auth";
 import Spinners from "../../Spinner/Spinners";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   /*---------all use state----------*/
@@ -26,17 +32,25 @@ const Login = () => {
   /*---------Google sign in ----------*/
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
+  /*---------GutHub sign in ----------*/
+  const [signInWithGithub, githubUser, githubLoading, githubError] =
+    useSignInWithGithub(auth);
+
+  /*---------- Forget Password handle---------*/
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
   /*---------Loading and error handle Start here ----------*/
   let emailMessage;
   let googleErrorMessage;
-  if (googleError || error) {
+  if (googleError || error || githubError) {
     emailMessage = error?.message;
-    googleErrorMessage = googleError?.message;
+    googleErrorMessage = googleError?.message
+      ? googleError?.message
+      : githubError?.message;
   }
 
-  if (loading || googleLoading) {
-    <Spinners />;
+  if (loading || googleLoading || githubLoading || sending) {
+    return <Spinners />;
   }
 
   /*---------Submit handler Start here ----------*/
@@ -49,7 +63,7 @@ const Login = () => {
 
   /*---------Private routes handle ----------*/
   let from = location?.state?.from?.pathname || "/profile";
-  if (user || googleUser) {
+  if (user || googleUser || githubUser) {
     navigate(from, { replace: true });
   }
 
@@ -84,7 +98,10 @@ const Login = () => {
                 <button className="SocialLogin">
                   <img src={twitterIcons} alt="" /> Sign in With Twitter
                 </button>
-                <button className="SocialLogin">
+                <button
+                  onClick={() => signInWithGithub()}
+                  className="SocialLogin"
+                >
                   <img src={githubIcons} alt="" /> Sign in With GitHub
                 </button>
               </div>
@@ -125,10 +142,23 @@ const Login = () => {
                     className="passwordInput"
                   />
                 </Form.Group>
-                <h6 className="forgetPassword">Forget Password?</h6>
+                <h6
+                  className="forgetPassword"
+                  onClick={async () => {
+                    if (emailRef.current.value) {
+                      await sendPasswordResetEmail(emailRef.current.value);
+                      toast("Please Check your Email");
+                    } else {
+                      toast("Please enter Email");
+                    }
+                  }}
+                >
+                  Forget Password?
+                </h6>
                 <Button className="submitBtn" variant="primary" type="submit">
                   Login
                 </Button>
+                <ToastContainer />
               </Form>
               <div className="createNewAccount">
                 <span> Not registered yet?</span>

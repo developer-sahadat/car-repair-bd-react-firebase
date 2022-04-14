@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, NavLink } from "react-router-dom";
@@ -8,7 +8,6 @@ import { signOut } from "firebase/auth";
 
 const Header = () => {
   const [user] = useAuthState(auth);
-  console.log(user);
 
   return (
     <div>
@@ -30,14 +29,14 @@ const Header = () => {
                 <NavLink className="link" to="/contact">
                   Contact
                 </NavLink>
-                {user && (
-                  <NavLink className="link" to="/profile">
-                    {user.displayName ? user.displayName : "Md"}
-                  </NavLink>
-                )}
                 <NavLink className="link" to="/services">
                   Services
                 </NavLink>
+                {user && (
+                  <NavLink className="link" to="/profile">
+                    {user && "Profile"}
+                  </NavLink>
+                )}
               </Nav>
               {user ? (
                 <button onClick={() => signOut(auth)} className="nav-btn">

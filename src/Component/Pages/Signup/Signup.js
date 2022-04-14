@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import loginImg from "../../../Assets/Images/login.jpg";
 import googleIcons from "../../../Assets/Icons/icons8-google-48.png";
 import facebookIcons from "../../../Assets/Icons/icons8-facebook-48.png";
@@ -8,7 +8,9 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateUserWithEmailAndPassword,
+  useSendEmailVerification,
   useSignInWithGoogle,
+  useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import auth from "../../../Firebase/init";
 import Spinners from "../../Spinner/Spinners";
@@ -16,38 +18,48 @@ import Spinners from "../../Spinner/Spinners";
 const Signup = () => {
   /*---------all use state----------*/
   const navigate = useNavigate();
+  const [agree, setAgree] = useState(false);
 
   /*---------Create a user----------*/
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
+
+  const [sendEmailVerification, sending] = useSendEmailVerification(auth);
+
   /*---------Google sign in ----------*/
-  const [signInWithGoogle, googleLoading, googleError] =
+  const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
 
+  /*---------Update Profile----------*/
+  const [updateProfile] = useUpdateProfile(auth);
+
   /*---------Submit handler Start here ----------*/
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
 
-    // const name = e.target.name.value;
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    createUserWithEmailAndPassword(email, password);
+
+    if (agree) {
+      await createUserWithEmailAndPassword(email, password);
+      await updateProfile({ displayName: name });
+      navigate("/profile");
+      await sendEmailVerification();
+    } else {
+      alert("Please check the term and condition");
+    }
   };
 
   /*---------Loading and error handle Start here ----------*/
+  if (loading || googleLoading) {
+    return <Spinners />;
+  }
   let emailMessage;
   let googleErrorMessage;
   if (googleError || error) {
     emailMessage = error?.message;
     googleErrorMessage = googleError?.message;
-  }
-  if (loading || googleLoading) {
-    <Spinners />;
-  }
-
-  /*---------Private routes handle ----------*/
-  if (user) {
-    navigate("/profile");
   }
 
   /*--------- already have an account handle ----------*/
@@ -134,6 +146,14 @@ const Signup = () => {
                       required
                       className="passwordInput"
                       name="password"
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Check
+                      onClick={(e) => setAgree(e.target.checked)}
+                      type="checkbox"
+                      label="Car repair terms and conditions"
+                      className={agree ? "text-primary" : "text-danger"}
                     />
                   </Form.Group>
                   <Button className="submitBtn" variant="primary" type="submit">
