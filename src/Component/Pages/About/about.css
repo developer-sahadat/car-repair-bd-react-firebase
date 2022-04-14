@@ -1,0 +1,32 @@
+.about {
+  font-family: "Roboto Slab", serif;
+}
+.about h2 {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 3rem;
+}
+.about h2 span {
+  color: #42acf5;
+}
+.about h3 {
+  text-align: center;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+.about p {
+  font-size: 16px;
+  color: #403970;
+  text-align: justify;
+}
+.about h6 {
+  text-align: center;
+  font-weight: 600;
+}
+
+.about h5 {
+  font-weight: 600;
+  color: #42acf5;
+  text-align: center;
+  padding-top: 15px;
+}
