@@ -1,0 +1,21 @@
+.engine {
+  font-family: "Roboto", sans-serif;
+}
+.engine h2 {
+  font-weight: 600;
+}
+.engine p {
+  color: rgb(72, 67, 107, 0.8);
+  line-height: 2;
+}
+.seeMoreBtn {
+  background: #42acf5;
+  color: white;
+  border: none;
+  padding-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  font-weight: 500;
+}
