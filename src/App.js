@@ -11,6 +11,7 @@ import Signup from "./Component/Pages/Signup/Signup";
 import NotFound from "./Component/Pages/NotFound/NotFound";
 import Profile from "./Component/Pages/Profile/Profile";
 import RequireAuth from "./Component/RequireAuth/RequireAuth";
+import Footer from "./Component/Shear/Footer/Footer";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
         ></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
+
+      <Footer />
     </div>
   );
 }
