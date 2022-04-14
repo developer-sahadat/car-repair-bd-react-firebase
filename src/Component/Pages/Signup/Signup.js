@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import {
   useCreateUserWithEmailAndPassword,
   useSendEmailVerification,
+  useSignInWithFacebook,
+  useSignInWithGithub,
   useSignInWithGoogle,
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
@@ -29,6 +31,14 @@ const Signup = () => {
   /*---------Google sign in ----------*/
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
+
+  /*---------Facebook sign in ----------*/
+  const [signInWithFacebook, facebookUser, facebookLoading, facebookError] =
+    useSignInWithFacebook(auth);
+
+  /*---------GutHub sign in ----------*/
+  const [signInWithGithub, githubUser, githubLoading, githubError] =
+    useSignInWithGithub(auth);
 
   /*---------Update Profile----------*/
   const [updateProfile] = useUpdateProfile(auth);
@@ -52,14 +62,18 @@ const Signup = () => {
   };
 
   /*---------Loading and error handle Start here ----------*/
-  if (loading || googleLoading) {
+  if (loading || googleLoading || facebookLoading || githubLoading) {
     return <Spinners />;
   }
   let emailMessage;
-  let googleErrorMessage;
-  if (googleError || error) {
+  let socialErrorMessage;
+  if (googleError || error || facebookError || githubError) {
     emailMessage = error?.message;
-    googleErrorMessage = googleError?.message;
+    socialErrorMessage = googleError?.message
+      ? googleError?.message
+      : facebookError.message
+      ? facebookError.message
+      : githubError.message;
   }
 
   /*--------- already have an account handle ----------*/
@@ -77,7 +91,7 @@ const Signup = () => {
             <div>
               <div className=" login">
                 <h6 className="text-danger text-center">
-                  {googleErrorMessage}
+                  {socialErrorMessage}
                 </h6>
                 <h2>Sign Up</h2>
                 <p>See your growth and gets consultation support!</p>
@@ -88,7 +102,10 @@ const Signup = () => {
                   >
                     <img src={googleIcons} alt="" /> Sign in With Google
                   </button>
-                  <button className="SocialLogin">
+                  <button
+                    onClick={() => signInWithFacebook()}
+                    className="SocialLogin"
+                  >
                     <img src={facebookIcons} alt="" /> Sign in With Facebook
                   </button>
                   <button className="SocialLogin">

@@ -11,6 +11,7 @@ import auth from "../../../Firebase/init";
 import {
   useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
+  useSignInWithFacebook,
   useSignInWithGithub,
 } from "react-firebase-hooks/auth";
 import Spinners from "../../Spinner/Spinners";
@@ -36,20 +37,26 @@ const Login = () => {
   const [signInWithGithub, githubUser, githubLoading, githubError] =
     useSignInWithGithub(auth);
 
+  /*---------Facebook sign in ----------*/
+  const [signInWithFacebook, facebookUser, facebookLoading, facebookError] =
+    useSignInWithFacebook(auth);
+
   /*---------- Forget Password handle---------*/
   const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
   /*---------Loading and error handle Start here ----------*/
   let emailMessage;
   let googleErrorMessage;
-  if (googleError || error || githubError) {
+  if (googleError || error || githubError || facebookError) {
     emailMessage = error?.message;
     googleErrorMessage = googleError?.message
       ? googleError?.message
-      : githubError?.message;
+      : githubError?.message
+      ? githubError?.message
+      : facebookError.message;
   }
 
-  if (loading || googleLoading || githubLoading || sending) {
+  if (loading || googleLoading || githubLoading || sending || facebookLoading) {
     return <Spinners />;
   }
 
@@ -63,7 +70,7 @@ const Login = () => {
 
   /*---------Private routes handle ----------*/
   let from = location?.state?.from?.pathname || "/profile";
-  if (user || googleUser || githubUser) {
+  if (user || googleUser || githubUser || facebookUser) {
     navigate(from, { replace: true });
   }
 
@@ -92,7 +99,10 @@ const Login = () => {
                 >
                   <img src={googleIcons} alt="" /> Sign in With Google
                 </button>
-                <button className="SocialLogin">
+                <button
+                  onClick={() => signInWithFacebook()}
+                  className="SocialLogin"
+                >
                   <img src={facebookIcons} alt="" /> Sign in With Facebook
                 </button>
                 <button className="SocialLogin">
