@@ -32,11 +32,13 @@ const Signup = () => {
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
 
+  console.log(googleUser?.user?.email);
+
   /*---------Facebook sign in ----------*/
   const [signInWithFacebook, facebookUser, facebookLoading, facebookError] =
     useSignInWithFacebook(auth);
 
-  /*---------GutHub sign in ----------*/
+  /*---------GitHub sign in ----------*/
   const [signInWithGithub, githubUser, githubLoading, githubError] =
     useSignInWithGithub(auth);
 
@@ -111,7 +113,10 @@ const Signup = () => {
                   <button className="SocialLogin">
                     <img src={twitterIcons} alt="" /> Sign in With Twitter
                   </button>
-                  <button className="SocialLogin">
+                  <button
+                    onClick={() => signInWithGithub()}
+                    className="SocialLogin"
+                  >
                     <img src={githubIcons} alt="" /> Sign in With GitHub
                   </button>
                 </div>

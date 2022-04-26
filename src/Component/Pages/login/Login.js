@@ -16,8 +16,9 @@ import {
 } from "react-firebase-hooks/auth";
 import Spinners from "../../Spinner/Spinners";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Login = () => {
   /*---------all use state----------*/
@@ -53,7 +54,7 @@ const Login = () => {
       ? googleError?.message
       : githubError?.message
       ? githubError?.message
-      : facebookError.message;
+      : facebookError?.message;
   }
 
   if (loading || googleLoading || githubLoading || sending || facebookLoading) {
@@ -61,11 +62,16 @@ const Login = () => {
   }
 
   /*---------Submit handler Start here ----------*/
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    signInWithEmailAndPassword(email, password);
+    await signInWithEmailAndPassword(email, password);
+    const { data } = await axios.post(
+      "https://quiet-shelf-65814.herokuapp.com/login",
+      { email }
+    );
+    localStorage.setItem("accessToken", data.accessToken);
   };
 
   /*---------Private routes handle ----------*/
@@ -168,7 +174,6 @@ const Login = () => {
                 <Button className="submitBtn" variant="primary" type="submit">
                   Login
                 </Button>
-                <ToastContainer />
               </Form>
               <div className="createNewAccount">
                 <span> Not registered yet?</span>
